@@ -51,24 +51,25 @@ public class TrainMain {
 		return train;
 	}
 
+	private static void fillTrain(Train train) {
+		for (int i = 0; i < train.getMaxWagons(); i++) {
+			int sizeType = (int) (Math.random() * 2);
+			int wheels = (int) (Math.random() * 3 + 2);
+			train.addWagon(new Wagon(i + 1, Size.values()[sizeType], wheels));
+		}
+	}
+
 	// Filter for Eastbound
 	private static void setEastBound(Train train) {
 		if (train.getMaxWagons() > 3) {
 			List<Wagon> wagons = train.getWagons();
 
-			if (wagons.get(0).getSize() == Size.SMALL
-					&& wagons.get(1).getSize() == Size.LARGE
-					&& wagons.get(2).getSize() == Size.LARGE
-					&& wagons.get(3).getSize() == Size.LARGE) {
+			if (wagons.get(0).getWheelNumber() == 2
+					&& wagons.get(0).getSize() == Size.LARGE
+					&& wagons.get(1).getWheelNumber() == 4
+					&& wagons.get(1).getSize() == Size.SMALL) {
 				train.setEastBound(true);
 			}
-		}
-	}
-
-	private static void fillTrain(Train train) {
-		for (int i = 0; i < train.getMaxWagons(); i++) {
-			int sizeType = (int) (Math.random() * 2);
-			train.addWagon(new Wagon(i + 1, Size.values()[sizeType]));
 		}
 	}
 

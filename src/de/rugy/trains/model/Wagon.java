@@ -6,11 +6,13 @@ public class Wagon {
 
 	private int trainNumber = 0;
 	private int wagonNumber;
+	private int wheelNumber;
 	private Size size;
 
-	public Wagon(int wagonNumber, Size size) {
+	public Wagon(int wagonNumber, Size size, int wheelNumber) {
 		this.wagonNumber = wagonNumber;
 		this.size = size;
+		this.wheelNumber = wheelNumber;
 	}
 
 	public void setTrainNumber(int trainNumber) {
@@ -19,6 +21,10 @@ public class Wagon {
 
 	public Size getSize() {
 		return size;
+	}
+
+	public int getWheelNumber() {
+		return wheelNumber;
 	}
 
 	@Override

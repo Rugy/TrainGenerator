@@ -79,7 +79,8 @@ public class TrainWriter {
 		modes[0] = ":- modeh(1,eastbound(+train)).";
 		modes[1] = ":- modeb(1,small(+car)).";
 		modes[2] = ":- modeb(1,large(+car)).";
-		modes[3] = ":- modeb(*,has_car(+train,-car)).";
+		modes[3] = ":- modeb(1,wheels(+car,#int)).";
+		modes[4] = ":- modeb(*,has_car(+train,-car)).";
 
 		return modes;
 	}
@@ -89,7 +90,8 @@ public class TrainWriter {
 		String[] determinations = new String[Attribute.values().length - 1];
 		determinations[0] = ":- determination(eastbound/1,small/1).";
 		determinations[1] = ":- determination(eastbound/1,large/1).";
-		determinations[2] = ":- determination(eastbound/1,has_car/2).";
+		determinations[2] = ":- determination(eastbound/1,wheels/2).";
+		determinations[3] = ":- determination(eastbound/1,has_car/2).";
 
 		return determinations;
 	}
@@ -139,6 +141,14 @@ public class TrainWriter {
 				Wagon wagon = aTrain.getWagons().get(i);
 				featureDef[k] = wagon.getSize().toString().toLowerCase() + "("
 						+ wagon.toString() + ").";
+				k++;
+			}
+
+			// Wheels
+			for (int i = 0; i < featureDef.length / featureCount; i++) {
+				Wagon wagon = aTrain.getWagons().get(i);
+				featureDef[k] = "wheels(" + wagon.toString() + ","
+						+ wagon.getWheelNumber() + ").";
 				k++;
 			}
 
