@@ -2,9 +2,13 @@ package de.rugy.trains;
 
 public class Wagon {
 
+	private int trainNumber;
+	private int wagonNumber;
 	private Size size;
 
-	public Wagon(Size size) {
+	public Wagon(int trainNumber, int wagonNumber, Size size) {
+		this.trainNumber = trainNumber;
+		this.wagonNumber = wagonNumber;
 		this.size = size;
 	}
 
@@ -14,7 +18,7 @@ public class Wagon {
 
 	@Override
 	public String toString() {
-		return size.toString();
+		return "car_" + trainNumber + wagonNumber;
 	}
 
 }

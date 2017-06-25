@@ -12,10 +12,7 @@
 
 :- set(i,2).
 
-%target
 :- modeh(1,eastbound(+train)).
-
-%body
 :- modeb(1,short(+car)).
 :- modeb(1,closed(+car)).
 :- modeb(1,long(+car)).
@@ -59,7 +56,7 @@ train(west6).  train(west7).  train(west8).  train(west9).  train(west10).
 
 % eastbound train 1
 short(car_12).		% 0
-closed(car_12).		% 1
+open_car(car_12).		% 1
 long(car_11).		% 2
 long(car_13).
 short(car_14).
@@ -95,7 +92,7 @@ shape(car_22,u_shaped).
 shape(car_23,rectangle).
 open_car(car_21).
 open_car(car_22).
-closed(car_23).
+open_car(car_23).
 load(car_21,triangle,1).
 load(car_22,rectangle,1).
 load(car_23,circle,2).
@@ -114,8 +111,8 @@ shape(car_31,rectangle).
 shape(car_32,hexagon).
 shape(car_33,rectangle).
 open_car(car_31).
-closed(car_32).
-closed(car_33).
+open_car(car_32).
+open_car(car_33).
 load(car_31,circle,1).
 load(car_32,triangle,1).
 load(car_33,triangle,1).
@@ -178,8 +175,8 @@ long(car_61).
 short(car_62).
 shape(car_61,rectangle).
 shape(car_62,rectangle).
-closed(car_62).
-open_car(car_61).
+closed(car_61).
+open_car(car_62).
 load(car_61,circle,3).
 load(car_62,triangle,1).
 wheels(car_61,2).

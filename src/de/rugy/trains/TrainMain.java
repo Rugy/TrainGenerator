@@ -12,7 +12,7 @@ public class TrainMain {
 
 		for (int i = 0; i < 10; i++) {
 			int maxWagons = (int) (Math.random() * 4 + 2);
-			Train train = new Train(maxWagons);
+			Train train = new Train(i + 1, maxWagons);
 			fillTrain(train);
 			trains.add(train);
 		}
@@ -36,19 +36,14 @@ public class TrainMain {
 			}
 		}
 
-		String[] trainDescr = new String[trainsSorted.size()];
-
-		for (int i = 0; i < trainDescr.length; i++) {
-			trainDescr[i] = trainsSorted.poll().toString();
-		}
-
-		TrainWriter.writeToFile("Test", trainDescr);
+		TrainWriter.writeToFile("Test", trainsSorted);
 	}
 
 	public static void fillTrain(Train train) {
 		for (int i = 0; i < train.getMaxWagons(); i++) {
 			int sizeType = (int) (Math.random() * 2);
-			train.addWagon(new Wagon(Size.values()[sizeType]));
+			train.addWagon(new Wagon(train.getTrainNumber(), i + 1, Size
+					.values()[sizeType]));
 		}
 	}
 }
