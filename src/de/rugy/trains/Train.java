@@ -37,12 +37,13 @@ public class Train {
 	public String toString() {
 		StringBuilder train = new StringBuilder();
 
-		train.append("This Train has " + maxWagons + " Wagons\n");
 		if (eastBound) {
 			train.append("This Train is eastbound\n");
 		} else {
 			train.append("This train is westbound\n");
 		}
+
+		train.append("This Train has " + maxWagons + " Wagons\n");
 
 		for (int i = 0; i < wagons.size(); i++) {
 			train.append("Wagon " + i + " is "
