@@ -8,11 +8,18 @@ public class Train {
 	private int trainNumber;
 	private List<Wagon> wagons = new ArrayList<>();
 	private int maxWagons;
-	private boolean eastBound;
+	private boolean eastBound = false;
+	private String direction = "west";
 
-	public Train(int trainNumber, int maxWagons) {
-		this.trainNumber = trainNumber;
+	public Train(int maxWagons) {
 		this.maxWagons = maxWagons;
+	}
+
+	public void setTrainNumber(int trainNumber) {
+		this.trainNumber = trainNumber;
+		for (Wagon aWagon : wagons) {
+			aWagon.setTrainNumber(trainNumber);
+		}
 	}
 
 	public int getTrainNumber() {
@@ -37,6 +44,11 @@ public class Train {
 
 	public void setEastBound(boolean eastBound) {
 		this.eastBound = eastBound;
+		direction = "east";
+	}
+
+	public String getDirection() {
+		return direction;
 	}
 
 	@Override

@@ -76,7 +76,7 @@ public class TrainWriter {
 	// update manually
 	private static String[] getModes() {
 		String[] modes = new String[Attribute.values().length];
-		modes[0] = ":- modeb(1,eastbound(+train)).";
+		modes[0] = ":- modeh(1,eastbound(+train)).";
 		modes[1] = ":- modeb(1,small(+car)).";
 		modes[2] = ":- modeb(1,large(+car)).";
 		modes[3] = ":- modeb(*,has_car(+train,-car)).";
@@ -117,7 +117,8 @@ public class TrainWriter {
 		int k = trains.size() + 1;
 
 		for (Train aTrain : trains) {
-			typeDefs[k] = "train(train" + aTrain.getTrainNumber() + ").";
+			typeDefs[k] = "train(" + aTrain.getDirection()
+					+ aTrain.getTrainNumber() + ").";
 			k++;
 		}
 
@@ -143,7 +144,8 @@ public class TrainWriter {
 
 			// Has_Car
 			for (int i = 0; i < featureDef.length / featureCount; i++) {
-				featureDef[k] = "has_car(train" + aTrain.getTrainNumber() + ","
+				featureDef[k] = "has_car(" + aTrain.getDirection()
+						+ aTrain.getTrainNumber() + ","
 						+ aTrain.getWagons().get(i).toString() + ").";
 				k++;
 			}
@@ -160,7 +162,7 @@ public class TrainWriter {
 
 		while (east) {
 			if (trains.peek() != null && trains.peek().isEastBound()) {
-				positives.add("eastbound(train"
+				positives.add("eastbound(" + trains.peek().getDirection()
 						+ trains.poll().getTrainNumber() + ").");
 			} else {
 				east = false;
@@ -174,8 +176,8 @@ public class TrainWriter {
 		List<String> negatives = new ArrayList<>();
 
 		while (trains.peek() != null) {
-			negatives.add("eastbound(train" + trains.poll().getTrainNumber()
-					+ ").");
+			negatives.add("eastbound(" + trains.peek().getDirection()
+					+ trains.poll().getTrainNumber() + ").");
 		}
 
 		return negatives;

@@ -4,14 +4,17 @@ import de.rugy.trains.enums.Size;
 
 public class Wagon {
 
-	private int trainNumber;
+	private int trainNumber = 0;
 	private int wagonNumber;
 	private Size size;
 
-	public Wagon(int trainNumber, int wagonNumber, Size size) {
-		this.trainNumber = trainNumber;
+	public Wagon(int wagonNumber, Size size) {
 		this.wagonNumber = wagonNumber;
 		this.size = size;
+	}
+
+	public void setTrainNumber(int trainNumber) {
+		this.trainNumber = trainNumber;
 	}
 
 	public Size getSize() {

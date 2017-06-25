@@ -1,6 +1,5 @@
 package de.rugy.trains;
 
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,45 +10,65 @@ import de.rugy.trains.model.Wagon;
 
 public class TrainMain {
 
+	private static final int POSITIVE_EXAMPLES = 5;
+	private static final int NEGATIVE_EXAMPLES = 5;
+
 	public static void main(String[] args) {
-		List<Train> trains = new ArrayList<>();
 
-		for (int i = 0; i < 20; i++) {
-			int maxWagons = (int) (Math.random() * 4 + 2);
-			Train train = new Train(i + 1, maxWagons);
-			fillTrain(train);
-			trains.add(train);
-		}
-
-		// Filter for Eastbound
-		for (Train aTrain : trains) {
-			if (aTrain.getMaxWagons() > 2) {
-				List<Wagon> wagons = aTrain.getWagons();
-
-				if (wagons.get(0).getSize() == Size.LARGE) {
-					aTrain.setEastBound(true);
-				}
-			}
-		}
-
-		// Sort EastFirst, then West
 		Deque<Train> trainsSorted = new LinkedList<>();
-		for (Train aTrain : trains) {
-			if (aTrain.isEastBound()) {
-				trainsSorted.addFirst(aTrain);
-			} else {
-				trainsSorted.addLast(aTrain);
+		int positiveCount = 0;
+		int negativeCount = 0;
+
+		while (positiveCount < POSITIVE_EXAMPLES
+				|| negativeCount < NEGATIVE_EXAMPLES) {
+			Train train = createTrain();
+
+			if (train.isEastBound() && positiveCount < POSITIVE_EXAMPLES) {
+				trainsSorted.addFirst(train);
+				positiveCount++;
+			} else if (!train.isEastBound()
+					&& negativeCount < NEGATIVE_EXAMPLES) {
+				trainsSorted.addLast(train);
+				negativeCount++;
 			}
+		}
+
+		int count = 1;
+		for (Train aTrain : trainsSorted) {
+			aTrain.setTrainNumber(count);
+			count++;
 		}
 
 		TrainWriter.writeToFile("train", trainsSorted);
 	}
 
-	public static void fillTrain(Train train) {
+	private static Train createTrain() {
+		int maxWagons = (int) (Math.random() * 4 + 2);
+		Train train = new Train(maxWagons);
+		fillTrain(train);
+		setEastBound(train);
+
+		return train;
+	}
+
+	// Filter for Eastbound
+	private static void setEastBound(Train train) {
+		if (train.getMaxWagons() > 3) {
+			List<Wagon> wagons = train.getWagons();
+
+			if (wagons.get(0).getSize() == Size.SMALL
+					&& wagons.get(1).getSize() == Size.LARGE
+					&& wagons.get(2).getSize() == Size.LARGE
+					&& wagons.get(3).getSize() == Size.LARGE) {
+				train.setEastBound(true);
+			}
+		}
+	}
+
+	private static void fillTrain(Train train) {
 		for (int i = 0; i < train.getMaxWagons(); i++) {
 			int sizeType = (int) (Math.random() * 2);
-			train.addWagon(new Wagon(train.getTrainNumber(), i + 1, Size
-					.values()[sizeType]));
+			train.addWagon(new Wagon(i + 1, Size.values()[sizeType]));
 		}
 	}
 
