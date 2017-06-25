@@ -8,6 +8,10 @@ public class Wagon {
 		this.size = size;
 	}
 
+	public Size getSize() {
+		return size;
+	}
+
 	@Override
 	public String toString() {
 		return size.toString();
