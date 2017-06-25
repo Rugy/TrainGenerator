@@ -5,33 +5,75 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
+
+import de.rugy.trains.enums.Attribute;
+import de.rugy.trains.enums.Feature;
+import de.rugy.trains.model.Train;
+import de.rugy.trains.model.Wagon;
 
 public class TrainWriter {
 
 	public static void writeToFile(String fileName, Deque<Train> trains) {
-		Path target = Paths.get(System.getProperty("user.dir") + "\\"
-				+ fileName + ".pl");
+		// Background Knolwedge
+		Path targetB = Paths.get(System.getProperty("user.dir") + "\\"
+				+ fileName + ".b");
+
 		String[] modes = getModes();
 		String[] determinations = getDeterminations();
 		String[] typeDefs = getTypeDefs(trains);
-		String[] trainDescription = getTrainDescription(trains);
+		List<String[]> trainDescription = getTrainDescription(trains);
 
 		try {
-			if (Files.exists(target)) {
-				Files.delete(target);
+			if (Files.exists(targetB)) {
+				Files.delete(targetB);
 			}
-			target = Files.createFile(target);
-			write(modes, target);
-			write(determinations, target);
-			write(typeDefs, target);
-			write(trainDescription, target);
+			targetB = Files.createFile(targetB);
+			write(modes, targetB);
+			write(determinations, targetB);
+			write(typeDefs, targetB);
+			for (String[] aDescription : trainDescription) {
+				write(aDescription, targetB);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Positive Examples
+		Path targetF = Paths.get(System.getProperty("user.dir") + "\\"
+				+ fileName + ".f");
+		List<String> positives = getPositives(trains);
+
+		try {
+			if (Files.exists(targetF)) {
+				Files.delete(targetF);
+			}
+			targetF = Files.createFile(targetF);
+			writeList(positives, targetF);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// Negative Examples
+		Path targetN = Paths.get(System.getProperty("user.dir") + "\\"
+				+ fileName + ".n");
+		List<String> negatives = getNegatives(trains);
+
+		try {
+			if (Files.exists(targetN)) {
+				Files.delete(targetN);
+			}
+			targetN = Files.createFile(targetN);
+			writeList(negatives, targetN);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
+	// update manually
 	private static String[] getModes() {
 		String[] modes = new String[Attribute.values().length];
 		modes[0] = ":- modeh(1,eastbound(+train)).";
@@ -42,6 +84,7 @@ public class TrainWriter {
 		return modes;
 	}
 
+	// update manually
 	private static String[] getDeterminations() {
 		String[] determinations = new String[Attribute.values().length - 1];
 		determinations[0] = ":- determination(eastboud/1,small/1).";
@@ -81,19 +124,74 @@ public class TrainWriter {
 		return typeDefs;
 	}
 
-	private static String[] getTrainDescription(Deque<Train> trains) {
-		String[] trainDescr = new String[trains.size()];
+	private static List<String[]> getTrainDescription(Deque<Train> trains) {
+		List<String[]> trainDescr = new ArrayList<>();
+		int featureCount = Feature.values().length;
 
-		for (int i = 0; i < trainDescr.length; i++) {
-			trainDescr[i] = trains.poll().toString();
+		for (Train aTrain : trains) {
+			String[] featureDef = new String[aTrain.getMaxWagons()
+					* featureCount];
+			int k = 0;
+
+			// Size
+			for (int i = 0; i < featureDef.length / featureCount; i++) {
+				Wagon wagon = aTrain.getWagons().get(i);
+				featureDef[k] = wagon.getSize().toString().toLowerCase() + "("
+						+ wagon.toString() + ").";
+				k++;
+			}
+
+			// Has_Car
+			for (int i = 0; i < featureDef.length / featureCount; i++) {
+				featureDef[k] = "has_car(train" + aTrain.getTrainNumber() + ","
+						+ aTrain.getWagons().get(i).toString() + ").";
+				k++;
+			}
+
+			trainDescr.add(featureDef);
 		}
 
 		return trainDescr;
 	}
 
+	private static List<String> getPositives(Deque<Train> trains) {
+		List<String> positives = new ArrayList<>();
+		boolean east = true;
+
+		while (east) {
+			if (trains.peek() != null && trains.peek().isEastBound()) {
+				positives.add("eastbound(" + trains.poll().getTrainNumber()
+						+ ").");
+			} else {
+				east = false;
+			}
+		}
+
+		return positives;
+	}
+
+	private static List<String> getNegatives(Deque<Train> trains) {
+		List<String> negatives = new ArrayList<>();
+
+		while (trains.peek() != null) {
+			negatives.add("eastbound(" + trains.poll().getTrainNumber() + ").");
+		}
+
+		return negatives;
+	}
+
 	private static void write(String[] text, Path target) throws IOException {
 		for (int i = 0; i < text.length; i++) {
 			Files.write(target, (text[i] + "\n").getBytes(),
+					StandardOpenOption.APPEND);
+		}
+		Files.write(target, "\n".getBytes(), StandardOpenOption.APPEND);
+	}
+
+	private static void writeList(List<String> text, Path target)
+			throws IOException {
+		for (String aText : text) {
+			Files.write(target, (aText + "\n").getBytes(),
 					StandardOpenOption.APPEND);
 		}
 		Files.write(target, "\n".getBytes(), StandardOpenOption.APPEND);

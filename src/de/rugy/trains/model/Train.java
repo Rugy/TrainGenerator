@@ -1,4 +1,4 @@
-package de.rugy.trains;
+package de.rugy.trains.model;
 
 import java.util.ArrayList;
 import java.util.List;

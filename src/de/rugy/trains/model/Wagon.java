@@ -1,4 +1,6 @@
-package de.rugy.trains;
+package de.rugy.trains.model;
+
+import de.rugy.trains.enums.Size;
 
 public class Wagon {
 

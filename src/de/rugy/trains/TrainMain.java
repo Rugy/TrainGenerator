@@ -5,6 +5,10 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.rugy.trains.enums.Size;
+import de.rugy.trains.model.Train;
+import de.rugy.trains.model.Wagon;
+
 public class TrainMain {
 
 	public static void main(String[] args) {
@@ -17,16 +21,18 @@ public class TrainMain {
 			trains.add(train);
 		}
 
+		// Filter for Eastbound
 		for (Train aTrain : trains) {
-			if (aTrain.getMaxWagons() > 3) {
+			if (aTrain.getMaxWagons() > 2) {
 				List<Wagon> wagons = aTrain.getWagons();
 
-				if (wagons.get(wagons.size() - 1).getSize() == Size.Small) {
+				if (wagons.get(0).getSize() == Size.LARGE) {
 					aTrain.setEastBound(true);
 				}
 			}
 		}
 
+		// Sort EastFirst, then West
 		Deque<Train> trainsSorted = new LinkedList<>();
 		for (Train aTrain : trains) {
 			if (aTrain.isEastBound()) {
@@ -46,4 +52,5 @@ public class TrainMain {
 					.values()[sizeType]));
 		}
 	}
+
 }
