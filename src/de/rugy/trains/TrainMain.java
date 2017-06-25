@@ -65,9 +65,7 @@ public class TrainMain {
 			List<Wagon> wagons = train.getWagons();
 
 			if (wagons.get(0).getWheelNumber() == 2
-					&& wagons.get(0).getSize() == Size.LARGE
-					&& wagons.get(1).getWheelNumber() == 4
-					&& wagons.get(1).getSize() == Size.SMALL) {
+					&& wagons.get(0).getSize() == Size.LARGE) {
 				train.setEastBound(true);
 			}
 		}
