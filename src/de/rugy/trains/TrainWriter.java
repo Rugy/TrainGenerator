@@ -76,7 +76,7 @@ public class TrainWriter {
 	// update manually
 	private static String[] getModes() {
 		String[] modes = new String[Attribute.values().length];
-		modes[0] = ":- modeh(1,eastbound(+train)).";
+		modes[0] = ":- modeb(1,eastbound(+train)).";
 		modes[1] = ":- modeb(1,small(+car)).";
 		modes[2] = ":- modeb(1,large(+car)).";
 		modes[3] = ":- modeb(*,has_car(+train,-car)).";
@@ -87,9 +87,9 @@ public class TrainWriter {
 	// update manually
 	private static String[] getDeterminations() {
 		String[] determinations = new String[Attribute.values().length - 1];
-		determinations[0] = ":- determination(eastboud/1,small/1).";
-		determinations[1] = ":- determination(eastboud/1,large/1).";
-		determinations[2] = ":- determination(eastboud/1,has_car/2).";
+		determinations[0] = ":- determination(eastbound/1,small/1).";
+		determinations[1] = ":- determination(eastbound/1,large/1).";
+		determinations[2] = ":- determination(eastbound/1,has_car/2).";
 
 		return determinations;
 	}
@@ -160,8 +160,8 @@ public class TrainWriter {
 
 		while (east) {
 			if (trains.peek() != null && trains.peek().isEastBound()) {
-				positives.add("eastbound(" + trains.poll().getTrainNumber()
-						+ ").");
+				positives.add("eastbound(train"
+						+ trains.poll().getTrainNumber() + ").");
 			} else {
 				east = false;
 			}
@@ -174,7 +174,8 @@ public class TrainWriter {
 		List<String> negatives = new ArrayList<>();
 
 		while (trains.peek() != null) {
-			negatives.add("eastbound(" + trains.poll().getTrainNumber() + ").");
+			negatives.add("eastbound(train" + trains.poll().getTrainNumber()
+					+ ").");
 		}
 
 		return negatives;

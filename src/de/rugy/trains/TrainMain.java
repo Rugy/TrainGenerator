@@ -14,7 +14,7 @@ public class TrainMain {
 	public static void main(String[] args) {
 		List<Train> trains = new ArrayList<>();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			int maxWagons = (int) (Math.random() * 4 + 2);
 			Train train = new Train(i + 1, maxWagons);
 			fillTrain(train);
@@ -42,7 +42,7 @@ public class TrainMain {
 			}
 		}
 
-		TrainWriter.writeToFile("Test", trainsSorted);
+		TrainWriter.writeToFile("train", trainsSorted);
 	}
 
 	public static void fillTrain(Train train) {

@@ -1,0 +1,15 @@
+eastbound(train2).
+eastbound(train4).
+eastbound(train7).
+eastbound(train8).
+eastbound(train9).
+eastbound(train11).
+eastbound(train12).
+eastbound(train14).
+eastbound(train15).
+eastbound(train16).
+eastbound(train17).
+eastbound(train18).
+eastbound(train19).
+eastbound(train20).
+
