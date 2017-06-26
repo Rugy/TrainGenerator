@@ -1,0 +1,12 @@
+TrainName,Size1,Wheels1,Size2,Wheels2,Size3,Wheels3
+east1,small,4,small,3
+east2,small,4,small,3
+east3,small,4,small,3
+east4,small,4,small,3
+east5,small,4,large,4
+west6,large,2,small,2,small,4
+west7,small,3,large,2
+west8,small,3,small,4
+west9,small,2,small,4
+west10,small,2,small,4,small,4
+

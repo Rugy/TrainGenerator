@@ -1,3 +1,8 @@
+eastbound(east1).
+eastbound(east2).
+eastbound(east3).
+eastbound(east4).
+eastbound(east5).
 eastbound(west6).
 eastbound(west7).
 eastbound(west8).

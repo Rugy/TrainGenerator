@@ -16,7 +16,7 @@ import de.rugy.trains.model.Wagon;
 
 public class TrainWriter {
 
-	public static void writeToFile(String fileName, Deque<Train> trains) {
+	public static void writeAlephFile(String fileName, Deque<Train> trains) {
 		// Background Knolwedge
 		Path targetB = Paths.get(System.getProperty("user.dir") + "\\"
 				+ fileName + ".b");
@@ -168,14 +168,11 @@ public class TrainWriter {
 
 	private static List<String> getPositives(Deque<Train> trains) {
 		List<String> positives = new ArrayList<>();
-		boolean east = true;
 
-		while (east) {
-			if (trains.peek() != null && trains.peek().isEastBound()) {
-				positives.add("eastbound(" + trains.peek().getDirection()
-						+ trains.poll().getTrainNumber() + ").");
-			} else {
-				east = false;
+		for (Train aTrain : trains) {
+			if (aTrain.isEastBound()) {
+				positives.add("eastbound(" + aTrain.getDirection()
+						+ aTrain.getTrainNumber() + ").");
 			}
 		}
 
@@ -185,12 +182,55 @@ public class TrainWriter {
 	private static List<String> getNegatives(Deque<Train> trains) {
 		List<String> negatives = new ArrayList<>();
 
-		while (trains.peek() != null) {
-			negatives.add("eastbound(" + trains.peek().getDirection()
-					+ trains.poll().getTrainNumber() + ").");
+		for (Train aTrain : trains) {
+			negatives.add("eastbound(" + aTrain.getDirection()
+					+ aTrain.getTrainNumber() + ").");
 		}
 
 		return negatives;
+	}
+
+	public static void writeCSVFile(String fileName, Deque<Train> trains) {
+		Path targetTable = Paths.get(System.getProperty("user.dir") + "\\"
+				+ fileName + ".csv");
+
+		StringBuilder headerB = new StringBuilder();
+		headerB.append("TrainName");
+		for (int i = 0; i < TrainMain.MAX_TRAINS; i++) {
+			headerB.append(",Size" + (i + 1) + ",Wheels" + (i + 1));
+		}
+
+		StringBuilder[] trainDescrB = new StringBuilder[1
+				+ TrainMain.POSITIVE_EXAMPLES + TrainMain.NEGATIVE_EXAMPLES];
+		String[] trainDescr = new String[trainDescrB.length];
+		trainDescr[0] = headerB.toString();
+		int i = 1;
+
+		for (Train aTrain : trains) {
+			trainDescrB[i] = new StringBuilder();
+			trainDescrB[i].append(aTrain.getDirection()
+					+ aTrain.getTrainNumber());
+
+			for (Wagon aWagon : aTrain.getWagons()) {
+				trainDescrB[i].append(","
+						+ aWagon.getSize().toString().toLowerCase() + ","
+						+ aWagon.getWheelNumber());
+			}
+			trainDescr[i] = trainDescrB[i].toString();
+
+			i++;
+		}
+
+		try {
+			if (Files.exists(targetTable)) {
+				Files.delete(targetTable);
+			}
+			targetTable = Files.createFile(targetTable);
+			write(trainDescr, targetTable);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private static void write(String[] text, Path target) throws IOException {

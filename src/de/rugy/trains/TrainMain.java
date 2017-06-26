@@ -10,8 +10,9 @@ import de.rugy.trains.model.Wagon;
 
 public class TrainMain {
 
-	private static final int POSITIVE_EXAMPLES = 5;
-	private static final int NEGATIVE_EXAMPLES = 5;
+	public static final int POSITIVE_EXAMPLES = 5;
+	public static final int NEGATIVE_EXAMPLES = 5;
+	public static final int MAX_TRAINS = 3;
 
 	public static void main(String[] args) {
 
@@ -39,11 +40,12 @@ public class TrainMain {
 			count++;
 		}
 
-		TrainWriter.writeToFile("train", trainsSorted);
+		TrainWriter.writeAlephFile("train", trainsSorted);
+		TrainWriter.writeCSVFile("train", trainsSorted);
 	}
 
 	private static Train createTrain() {
-		int maxWagons = (int) (Math.random() * 4 + 2);
+		int maxWagons = (int) (Math.random() * MAX_TRAINS + 1);
 		Train train = new Train(maxWagons);
 		fillTrain(train);
 		setEastBound(train);
@@ -61,11 +63,11 @@ public class TrainMain {
 
 	// Filter for Eastbound
 	private static void setEastBound(Train train) {
-		if (train.getMaxWagons() > 3) {
+		if (train.getMaxWagons() == 2) {
 			List<Wagon> wagons = train.getWagons();
 
-			if (wagons.get(0).getWheelNumber() == 2
-					&& wagons.get(0).getSize() == Size.LARGE) {
+			if (wagons.get(0).getSize() == Size.SMALL
+					&& wagons.get(0).getWheelNumber() == 4) {
 				train.setEastBound(true);
 			}
 		}
