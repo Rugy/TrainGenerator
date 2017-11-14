@@ -44,7 +44,11 @@ public class Train {
 
 	public void setEastBound(boolean eastBound) {
 		this.eastBound = eastBound;
-		direction = "east";
+		if (eastBound) {
+			direction = "east";
+		} else {
+			direction = "west";
+		}
 	}
 
 	public String getDirection() {

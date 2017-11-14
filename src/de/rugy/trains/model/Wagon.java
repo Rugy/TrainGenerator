@@ -1,5 +1,6 @@
 package de.rugy.trains.model;
 
+import de.rugy.trains.enums.CarShape;
 import de.rugy.trains.enums.Size;
 
 public class Wagon {
@@ -8,11 +9,13 @@ public class Wagon {
 	private int wagonNumber;
 	private int wheelNumber;
 	private Size size;
+	private CarShape carShape;
 
-	public Wagon(int wagonNumber, Size size, int wheelNumber) {
+	public Wagon(int wagonNumber, Size size, int wheelNumber, CarShape carShape) {
 		this.wagonNumber = wagonNumber;
 		this.size = size;
 		this.wheelNumber = wheelNumber;
+		this.carShape = carShape;
 	}
 
 	public void setTrainNumber(int trainNumber) {
@@ -25,6 +28,10 @@ public class Wagon {
 
 	public int getWheelNumber() {
 		return wheelNumber;
+	}
+
+	public CarShape getCarShape() {
+		return carShape;
 	}
 
 	@Override

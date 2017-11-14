@@ -2,6 +2,6 @@ package de.rugy.trains.enums;
 
 public enum Feature {
 
-	HAS_CAR, SIZE, WHEELS
+	HAS_CAR, SIZE, WHEELS, CAR_SHAPE
 
 }
